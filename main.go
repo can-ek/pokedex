@@ -14,7 +14,19 @@ func main() {
 		if buffer.Scan() {
 			input := buffer.Text()
 			cleaned := cleanInput(input)
-			fmt.Println("Your command was:", cleaned[0])
+
+			if len(cleaned) == 0 {
+				continue
+			}
+
+			if cmd, containsKey := cliCommands[cleaned[0]]; containsKey {
+				err := cmd.callback()
+				if err != nil {
+					fmt.Printf("Error when running command %s, Error: %v", cleaned[0], err)
+				}
+			} else {
+				fmt.Println("Unknown command")
+			}
 		}
 	}
 }
