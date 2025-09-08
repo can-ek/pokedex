@@ -11,13 +11,19 @@ const baseUrl string = "https://pokeapi.co/api/v2/"
 
 type query struct {
 	path  string
+	url   string
 	limit int
 }
 
 func get[T any](q query) (T, error) {
 	var result T
+	var fullUrl string
 
-	fullUrl := baseUrl + q.path
+	if q.url != "" {
+		fullUrl = q.url
+	} else {
+		fullUrl = baseUrl + q.path
+	}
 	if q.limit > 0 {
 		fullUrl = fmt.Sprintf("%s?limit=%d", fullUrl, q.limit)
 	}

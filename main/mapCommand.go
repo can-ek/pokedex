@@ -6,15 +6,38 @@ import (
 	apiclient "github.com/can-ek/pokedex/apiclient"
 )
 
-// Track the current state of the map navigation
-var currentMapResults apiclient.LocationAreas
+func commandMap(navigation *navigationProps) error {
+	var locationAreas apiclient.LocationAreas
+	var navProps navigationProps
 
-func commandMap() error {
-	locationAreas := apiclient.GetLocationAreas()
+	if navigation.nextUrl != "" {
+		locationAreas = apiclient.GetLocationArea(navigation.nextUrl)
+	} else {
+		locationAreas = apiclient.GetLocationAreas()
+	}
 
 	for _, area := range locationAreas.Results {
 		fmt.Println(area.Name)
 	}
-	currentMapResults = locationAreas
+
+	navProps.nextUrl = locationAreas.Next
+	navProps.previousUrl = locationAreas.Previous
+	*navigation = navProps
+	return nil
+}
+
+func commandMapBack(navigation *navigationProps) error {
+	if navigation.previousUrl != "" {
+		locationAreas := apiclient.GetLocationArea(navigation.previousUrl)
+
+		for _, area := range locationAreas.Results {
+			fmt.Println(area.Name)
+		}
+
+		navProps := navigationProps{nextUrl: locationAreas.Next, previousUrl: locationAreas.Previous}
+		*navigation = navProps
+	} else {
+		fmt.Println("you're on the first page")
+	}
 	return nil
 }

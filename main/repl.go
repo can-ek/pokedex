@@ -10,11 +10,17 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*navigationProps) error
+}
+
+type navigationProps struct {
+	previousUrl string
+	nextUrl     string
 }
 
 func startRepl() {
 	buffer := bufio.NewScanner(os.Stdin)
+	var navProps navigationProps
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -27,7 +33,7 @@ func startRepl() {
 			}
 
 			if cmd, containsKey := getCommands()[cleaned[0]]; containsKey {
-				err := cmd.callback()
+				err := cmd.callback(&navProps)
 				if err != nil {
 					fmt.Printf("Error when running command %s, Error: %v", cleaned[0], err)
 				}
@@ -59,6 +65,11 @@ func getCommands() map[string]cliCommand {
 			name:        "map",
 			description: "Displays the names of 20 location areas in the Pokemon world",
 			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Navigates to the previous page of location areas",
+			callback:    commandMapBack,
 		},
 	}
 }

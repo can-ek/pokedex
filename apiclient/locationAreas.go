@@ -16,11 +16,6 @@ type LocationAreas struct {
 	Results  []LocationArea `json:"results"`
 }
 
-type RequestParameters struct {
-	Url string
-	Id  int
-}
-
 func GetLocationAreas() LocationAreas {
 	urlPath := "location-area"
 	areas, err := get[LocationAreas](query{path: urlPath, limit: 20})
@@ -32,8 +27,8 @@ func GetLocationAreas() LocationAreas {
 	return areas
 }
 
-func GetLocationArea(path string) LocationAreas {
-	areas, err := get[LocationAreas](query{path: path, limit: 20})
+func GetLocationArea(url string) LocationAreas {
+	areas, err := get[LocationAreas](query{url: url, limit: 20})
 
 	if err != nil {
 		fmt.Printf("Error getting location areas: %g\n", err)
