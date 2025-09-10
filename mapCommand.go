@@ -6,19 +6,19 @@ import (
 	pokeapi "github.com/can-ek/pokedex/pokeapi"
 )
 
-func commandMap(session *sessionConfig) error {
+func commandMap(session *sessionConfig, params ...string) error {
 	var locationAreas pokeapi.LocationAreas
 	var err error
 
 	if session.nextUrl != "" {
-		locationAreas, err = session.pokeClient.GetLocationArea(session.nextUrl)
+		locationAreas, err = session.pokeClient.GetLocationAreas(session.nextUrl)
 
 		if err != nil {
 			fmt.Println(err)
 			return err
 		}
 	} else {
-		locationAreas, err = session.pokeClient.GetLocationAreas()
+		locationAreas, err = session.pokeClient.GetLocationAreas("")
 
 		if err != nil {
 			fmt.Println(err)
@@ -35,9 +35,9 @@ func commandMap(session *sessionConfig) error {
 	return nil
 }
 
-func commandMapBack(session *sessionConfig) error {
+func commandMapBack(session *sessionConfig, params ...string) error {
 	if session.previousUrl != "" {
-		locationAreas, err := session.pokeClient.GetLocationArea(session.previousUrl)
+		locationAreas, err := session.pokeClient.GetLocationAreas(session.previousUrl)
 
 		if err != nil {
 			fmt.Println(err)

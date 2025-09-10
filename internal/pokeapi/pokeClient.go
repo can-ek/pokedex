@@ -5,8 +5,8 @@ import (
 )
 
 type PokeClient interface {
-	GetLocationAreas() (LocationAreas, error)
-	GetLocationArea(url string) (LocationAreas, error)
+	GetLocationAreas(url string) (LocationAreas, error)
+	GetLocationArea(name string) (LocationArea, error)
 }
 
 type pokeClientInternal struct {

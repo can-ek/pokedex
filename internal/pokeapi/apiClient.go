@@ -9,10 +9,7 @@ import (
 	"github.com/can-ek/pokedex/pokecache"
 )
 
-const baseUrl string = "https://pokeapi.co/api/v2/"
-
 type query struct {
-	path  string
 	url   string
 	limit int
 }
@@ -34,14 +31,8 @@ func newClient(timeout time.Duration) apiClient {
 }
 
 func (c *client) get(q query) ([]byte, error) {
-	var fullUrl string
-	var key string
-
-	if q.url != "" {
-		key = q.url
-	} else {
-		key = baseUrl + q.path
-	}
+	fullUrl := q.url
+	key := q.url
 
 	if val, exists := c.cacheClient.Get(key); exists {
 		return val, nil
@@ -51,7 +42,7 @@ func (c *client) get(q query) ([]byte, error) {
 		fullUrl = fmt.Sprintf("%s?limit=%d", key, q.limit)
 	}
 
-	response, err := http.DefaultClient.Get(fullUrl)
+	response, err := c.httpClient.Get(fullUrl)
 
 	if err != nil {
 		fmt.Printf("Error on GET: %s - %g\n", fullUrl, err)
