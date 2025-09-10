@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func commandHelp(navigation *navigationProps) error {
+func commandHelp(session *sessionConfig) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("==========================")

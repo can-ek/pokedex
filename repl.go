@@ -5,22 +5,24 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	apiclient "github.com/can-ek/pokedex/pokeapi"
 )
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*navigationProps) error
+	callback    func(*sessionConfig) error
 }
 
-type navigationProps struct {
+type sessionConfig struct {
 	previousUrl string
 	nextUrl     string
+	pokeClient  apiclient.PokeClient
 }
 
-func startRepl() {
+func startRepl(session *sessionConfig) {
 	buffer := bufio.NewScanner(os.Stdin)
-	var navProps navigationProps
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -33,7 +35,7 @@ func startRepl() {
 			}
 
 			if cmd, containsKey := getCommands()[cleaned[0]]; containsKey {
-				err := cmd.callback(&navProps)
+				err := cmd.callback(session)
 				if err != nil {
 					fmt.Printf("Error when running command %s, Error: %v", cleaned[0], err)
 				}
