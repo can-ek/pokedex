@@ -19,6 +19,7 @@ type sessionConfig struct {
 	previousUrl string
 	nextUrl     string
 	pokeClient  apiclient.PokeClient
+	pokedex     map[string]apiclient.Pokemon
 }
 
 func startRepl(session *sessionConfig) {
@@ -77,6 +78,16 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "Displays the pokemon encountered in the location area specified",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Attempts to catch a pokemon, if successful it adds the pokemon to the pokedex",
+			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Returns information from a pokemon in the pokedex",
+			callback:    inspectCatch,
 		},
 	}
 }

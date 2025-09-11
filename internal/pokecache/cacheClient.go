@@ -1,7 +1,6 @@
 package pokecache
 
 import (
-	"fmt"
 	"sync"
 	"time"
 )
@@ -27,14 +26,14 @@ type CacheClient interface {
 func (c *cache) Add(key string, val []byte) error {
 	c.mutex.Lock()
 	c.elements[key] = cacheItem{val: val, createdAt: time.Now(), expireAt: time.Now().Add(c.expiry)}
-	fmt.Println("Added to cache:", key)
+	//	fmt.Println("Added to cache:", key)
 	c.mutex.Unlock()
 	return nil
 }
 
 func (c *cache) Get(key string) ([]byte, bool) {
 	if item, ok := c.elements[key]; ok {
-		fmt.Println("Found in cache:", key)
+		// fmt.Println("Found in cache:", key)
 		return item.val, true
 	}
 
@@ -47,7 +46,7 @@ func (c *cache) reapLoop(ticker *time.Ticker) {
 		for key, entry := range c.elements {
 			if time.Now().After(entry.expireAt) {
 				delete(c.elements, key)
-				fmt.Println("Deleted from cache:", key)
+				// fmt.Println("Deleted from cache:", key)
 			}
 		}
 		c.mutex.Unlock() // Ensure it gets unlocked

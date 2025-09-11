@@ -49,6 +49,11 @@ func (c *client) get(q query) ([]byte, error) {
 		return nil, err
 	}
 
+	if response.StatusCode != 200 {
+		err = fmt.Errorf("Error getting element at %s, failed with StatusCode: %d", fullUrl, response.StatusCode)
+		return nil, err
+	}
+
 	defer response.Body.Close()
 	bytes, err := io.ReadAll(response.Body)
 	if err != nil {

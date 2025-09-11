@@ -11,6 +11,7 @@ func main() {
 		nextUrl:     "",
 		previousUrl: "",
 		pokeClient:  apiclient.NewPokeClient(10 * time.Second),
+		pokedex:     map[string]apiclient.Pokemon{},
 	}
 
 	startRepl(&session)
