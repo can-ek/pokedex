@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func inspectCatch(session *sessionConfig, params ...string) error {
+func commandInspect(session *sessionConfig, params ...string) error {
 	if len(params) == 0 {
 		return fmt.Errorf("Error: Missing parameter for location area\n")
 	}
